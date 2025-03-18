@@ -40,6 +40,7 @@ def draw_graph(G, path, title):
         plt.figure(figsize=(10, 8))
         
         # original graph
+        plt.subplot()
         nx.draw(G, pos, with_labels=True, node_color='lightblue', edge_color='gray', node_size=500, font_size=10)
         labels = nx.get_edge_attributes(G, 'weight')
         nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
