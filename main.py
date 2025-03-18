@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 
 def create_weighted_graph():
     G = nx.Graph()
-    # Add edges along with their weights
     G.add_edge('A', 'B', weight=4)
     G.add_edge('A', 'C', weight=2)
     G.add_edge('B', 'C', weight=1)
@@ -25,8 +24,8 @@ def minimum_spanning_tree(G):
     mst = nx.minimum_spanning_tree(G, algorithm='kruskal')
     return mst
 
-def draw_graph(G, path=None):
-    if path is not None:
+def draw_graph(G, path, title):
+    if title == "Shortest Path Tree":
         pos = nx.spring_layout(G)
         plt.figure(figsize=(10, 8))
         
@@ -42,12 +41,22 @@ def draw_graph(G, path=None):
         plt.title("Shortest Path Tree using Dijkstra's Algorithm")
         plt.show()
     else:
-        pos = nx.spring_layout(G)  # Positions for all nodes
-        plt.figure(figsize=(8, 6))
-        nx.draw(G, pos, with_labels=True, node_color='lightblue', node_size=700, edge_color='gray')
-        edge_labels = nx.get_edge_attributes(G, 'weight')
-        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
-        plt.title("title")
+        pos = nx.spring_layout(G)
+        plt.figure(figsize=(10, 5))
+
+        plt.subplot(121)
+        nx.draw(G, pos, with_labels=True, node_color='lightblue', edge_color='gray')
+        labels = nx.get_edge_attributes(G, 'weight')
+        nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
+        plt.title("Original Graph")
+
+        # minimum spanning tree
+        plt.subplot(122)
+        nx.draw(mst, pos, with_labels=True, node_color='lightgreen', edge_color='blue')
+        labels = nx.get_edge_attributes(mst, 'weight')
+        nx.draw_networkx_edge_labels(mst, pos, edge_labels=labels)
+        plt.title("Minimum Spanning Tree")
+
         plt.show()
 
 
@@ -57,9 +66,8 @@ inp = int(input("1 for shortest path, 2 for minimum spanning tree\n> "))
 if inp == 1:
     start_node = 'A'
     length, path = dijkstra_shortest_path_tree(G, start_node)
-    draw_graph(G, path)
+    draw_graph(G, path, "Shortest Path Tree")
 
 elif inp == 2:
     mst = minimum_spanning_tree(G)
-    draw_graph(G)
-    draw_graph(mst)
+    draw_graph(G, mst, "Minimum Spanning Tree")
